@@ -55,12 +55,24 @@ fn zish_launch(allocator: Allocator, args: [][]const u8) !u32 {
   return 1;
 }
 
+fn zish_cd(allocator: Allocator, args: [][]const u8) !u32 {
+  const to_dir = if (args.len > 0) args[1] else ".";
+  try std.posix.chdir(to_dir);
+
+  const cur_dir: []u8 = try std.process.getCwdAlloc(allocator);
+  std.debug.print("{s}\n", .{cur_dir});
+  return 0;
+}
+
 fn zish_execute(allocator: Allocator, args: [][]const u8) !u32 {
-  var i: u32 = 0;
   if (args.len == 0) {
-    i = 1;
-    return i;
+    return 1;
   }
+
+  if (std.mem.eql(u8, args[0], "cd")) {
+    return zish_cd(allocator, args);
+  }
+
   return zish_launch(allocator, args);
 }
 
