@@ -2,9 +2,6 @@ const std = @import("std");
 const io = std.io;
 const Allocator = std.mem.Allocator;
 
-//const stdout = io.getStdOut().writer();
-//const stdin = io.getStdIn().reader();
-
 const ZISH_TOKEN_DELIMITER: []const u8 = " \t\r\n";
 
 fn zish_loop() !void {
@@ -19,6 +16,7 @@ fn zish_loop() !void {
         const line = try zish_read_line(allocator);
         args = try zish_split_line(allocator, line);
         _ = try zish_execute(allocator, args);
+        allocator.free(line);
     }
     return;
 }
