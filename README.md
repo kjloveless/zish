@@ -8,3 +8,4 @@ i was heavily inspired and drew reference from these sources:
 * [Forking is Cool - @ratfactor](https://ratfactor.com/zig/forking-is-cool)
 * [zigsh - @gitabaz](https://github.com/gitabaz/zigsh/tree/master)
 * [zigsh - @zakinomiya](https://github.com/zakinomiya/zigsh)
+* [42-shell - @Hoommus](https://github.com/Hoommus/42-shell) - can also find various "minishell's" from school 42
