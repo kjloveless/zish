@@ -71,6 +71,19 @@ fn launch(allocator: Allocator, args: [][]const u8) !u32 {
     return child_process_result.term.Exited;
 }
 
+fn exportCmd(args: [][]const u8) !u32 {
+  if (args.len >= 2) {
+    const kv = args[1];
+    const idx = std.mem.indexOf(u8, kv, '=');
+    if (idx) |i| {
+      const key = kv[0..i];
+      const val = kv[i+1..];
+      try std.os.setEnv(key, val);
+    }
+  }
+  continue;
+}
+
 fn cd(allocator: Allocator, args: [][]const u8) !u32 {
     const to_dir = if (args.len > 0) args[1] else ".";
     try std.posix.chdir(to_dir);
@@ -91,6 +104,10 @@ fn execute(allocator: Allocator, args: [][]const u8) !u32 {
 
     if (std.mem.eql(u8, args[0], "cd")) {
         return cd(allocator, args);
+    }
+
+    if (std.mem.eql(u8, args[0], "export")) {
+      return exportCmd(args);
     }
 
     return launch(allocator, args);
